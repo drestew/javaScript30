@@ -1,21 +1,19 @@
-// store element for each key from Dom
-// function for 'keydown' eventlistener
-// inside function toggle active class
-
-window.addEventListener('keydown', function (e) {
+const playSound = function (e) {
   const audio = document.querySelector(`audio[data-key="${e.code}"]`)
-  document.querySelector('.key').classList.toggle('playing')
-  console.log(audio)
+  const key = document.querySelector(`.key[data-key="${e.code}"]`)
+  key.classList.add('playing')
+  console.log(key)
+  if (!audio) return
+  audio.currentTime = 0
   audio.play()
-  document.querySelector('.key').classList.toggle('playing')
-})
+}
 
-// const keyPress = function (e) {
-//   console.log('yse')
-// }
+const removeTransition = function (e) {
+  if (e.propertyName !== 'transform') return
+  this.classList.remove('playing')
+}
 
-// curKey.forEach(key => {
-//     if (key.dataset.key = "65") {
-//         key.classList.add("playing")
-//     }
-// })
+const keys = document.querySelectorAll('.key')
+
+window.addEventListener('keydown', playSound)
+keys.forEach((key) => key.addEventListener('transitionend', removeTransition))
